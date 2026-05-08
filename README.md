@@ -20,10 +20,10 @@ An interactive calculator showing how the war in Iran has increased fill-up cost
 
 ### 1. Create the GitHub repo
 
-Create a new **public** repo on GitHub (e.g., `bpc-gas-calculator`). Upload all files, preserving the `.github/workflows/` folder structure.
+Create a new **public** repo on GitHub. Upload all files, preserving the `.github/workflows/` folder structure.
 
 ```
-bpc-gas-calculator/
+your-repo/
 ├── gas-tax-calculator.html
 ├── update_gas_prices.py
 ├── .gitignore
@@ -75,5 +75,5 @@ The pre-war baseline (Feb. 26, 2026) is in a separate `PRICES_PREWAR` block and 
 - **Pre-war baseline:** AAA prices on Feb. 26, 2026 via Wayback Machine (two days before the conflict in Iran began)
 - **Tank sizes:** [Edmunds](https://www.edmunds.com/car-maintenance/how-many-gallons-of-gas-does-car-hold.html)
 - **Federal gas tax:** $0.184/gallon (gas), $0.244/gallon (diesel)
-- **Pass-through rates:** [Wharton Budget Model](https://budgetmodel.wharton.upenn.edu/p/2022-06-15-effects-of-a-state-gasoline-tax-holiday/)
+- **Pass-through rates:** [Penn Wharton Budget Model](https://budgetmodel.wharton.upenn.edu/p/2022-06-15-effects-of-a-state-gasoline-tax-holiday/)
 

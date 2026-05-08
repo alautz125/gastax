@@ -1,4 +1,4 @@
-# BPC Gas Tax Calculator
+# Gas Tax Calculator
 
 An interactive calculator showing how the war in Iran has increased fill-up costs — and how much a federal gas tax holiday would save at the pump.
 
@@ -59,9 +59,9 @@ Every day at 8 AM ET, GitHub runs `update_gas_prices.py`, which:
 2. Parses all 51 state/D.C. prices (Regular, Mid-Grade, Premium, Diesel)
 3. Replaces the data block in `gas-tax-calculator.html` between these sentinel comments:
    ```
-   // ==BPC_PRICES_TODAY_START==
+   // ==PRICES_TODAY_START==
    ...
-   // ==BPC_PRICES_TODAY_END==
+   // ==PRICES_TODAY_END==
    ```
 4. Commits and pushes the updated file if prices changed
 
@@ -77,4 +77,3 @@ The pre-war baseline (Feb. 26, 2026) is in a separate `PRICES_PREWAR` block and 
 - **Federal gas tax:** $0.184/gallon (gas), $0.244/gallon (diesel)
 - **Pass-through rates:** [Wharton Budget Model](https://budgetmodel.wharton.upenn.edu/p/2022-06-15-effects-of-a-state-gasoline-tax-holiday/)
 
-Analysis by the [Bipartisan Policy Center](https://bipartisanpolicy.org).

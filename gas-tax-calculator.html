@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gas Price Calculator | Bipartisan Policy Center</title>
+  <title>Gas Price Calculator</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -343,14 +343,14 @@
     Gas prices sourced from AAA State Gas Price Averages (updated daily).
     Pre-war baseline: Feb. 26, 2026 (via Wayback Machine), two days before the conflict in Iran began.
     Tank sizes from Edmunds. Federal gas tax: $0.184/gallon; diesel: $0.244/gallon.
-    Pass-through rates from the Wharton Budget Model (2022). Analysis by the Bipartisan Policy Center.
+    Pass-through rates from the Wharton Budget Model (2022).
   </div>
 </div>
 
 <script>
 // ============================================================
 // PRICES — auto-updated daily by GitHub Actions.
-// ==BPC_PRICES_TODAY_START==
+// ==PRICES_TODAY_START==
 const PRICES_AS_OF = "May 7, 2026";
 const PRICES_TODAY = {
   'US Average':           { regular:4.56, midgrade:5.04, premium:5.42, diesel:5.67 },
@@ -406,7 +406,7 @@ const PRICES_TODAY = {
   'Wisconsin':            { regular:4.40, midgrade:4.91, premium:5.50, diesel:5.68 },
   'Wyoming':              { regular:4.40, midgrade:4.70, premium:4.98, diesel:5.46 },
 };
-// ==BPC_PRICES_TODAY_END==
+// ==PRICES_TODAY_END==
 // ============================================================
 
 const PRICES_PREWAR = {

@@ -36,8 +36,8 @@ IN_CI    = os.environ.get("CI") == "true"
 LOG_FILE = Path("/tmp/update_gas_prices.log") if IN_CI else SCRIPT_DIR / "update_gas_prices.log"
 
 AAA_URL        = "https://gasprices.aaa.com/state-gas-price-averages/"
-SENTINEL_START = "// ==BPC_PRICES_TODAY_START=="
-SENTINEL_END   = "// ==BPC_PRICES_TODAY_END=="
+SENTINEL_START = "// ==PRICES_TODAY_START=="
+SENTINEL_END   = "// ==PRICES_TODAY_END=="
 
 # ── State name mapping (AAA label → HTML data key) ───────────────────────────
 STATE_MAP = {

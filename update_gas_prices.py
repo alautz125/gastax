@@ -293,7 +293,9 @@ def main():
 
     if changed:
         us = prices.get("US Average", {})
-        log.info(f"Update complete ({as_of}) — U.S. avg regular: ${us.get('regular','?'):.2f}")
+        us_regular = us.get('regular')
+price_str = f"${us_regular:.2f}" if us_regular is not None else "not in parsed results"
+log.info(f"Update complete ({as_of}) — U.S. avg regular: {price_str}")
     log.info("Done.")
 
 

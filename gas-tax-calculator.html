@@ -188,6 +188,53 @@
       font-size: 0.68rem; color: #94a3b8; text-align: center; margin-top: 18px;
       line-height: 1.7; max-width: 580px; margin-left: auto; margin-right: auto;
     }
+    .savings-breakdown { display: flex; gap: 10px; margin-bottom: 12px; }
+    .sav-line {
+      flex: 1; background: #f0fdf4; border: 1.5px solid #86efac;
+      border-radius: 9px; padding: 12px 14px; text-align: center;
+    }
+    .sav-line-label { font-size: 0.67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #15803d; margin-bottom: 4px; }
+    .sav-line-amount { font-size: 1.05rem; font-weight: 900; color: #16a34a; margin-bottom: 3px; }
+    .sav-line-desc { font-size: 0.67rem; color: #64748b; line-height: 1.35; }
+    .state-tax-section { margin-top: 22px; padding-top: 20px; border-top: 1.5px dashed #e2e8f0; }
+    .state-tax-toggle { flex-wrap: wrap; }
+    .state-tax-toggle .toggle-btn { font-size: 0.78rem; flex: 1 1 auto; }
+    #stateTaxToggle .toggle-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .share-results-btn {
+      display: block; width: 100%; padding: 12px; border: none; border-radius: 9px;
+      background: linear-gradient(135deg, #1a3a5c, #0f2740); color: white;
+      font-size: 0.875rem; font-weight: 800; cursor: pointer; text-align: center;
+      transition: opacity 0.18s; margin-top: 12px; margin-bottom: 8px;
+    }
+    .share-results-btn:hover { opacity: 0.87; }
+    .share-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .share-modal {
+      background: white; border-radius: 16px; padding: 24px 24px 20px;
+      max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .share-modal-title { font-size: 1.1rem; font-weight: 800; color: #0f2740; }
+    .share-modal-sub   { font-size: 0.8rem; color: #64748b; margin-top: 2px; margin-bottom: 14px; }
+    .share-preview     { width: 100%; border-radius: 10px; border: 1.5px solid #e2e8f0; display: block; margin-bottom: 14px; }
+    .share-btns        { display: flex; gap: 8px; flex-wrap: wrap; }
+    .share-btn {
+      flex: 1; padding: 10px 12px; border: none; border-radius: 9px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.18s;
+      text-align: center; min-width: 120px;
+    }
+    .share-btn-dl   { background: #1a3a5c; color: white; }
+    .share-btn-dl:hover { background: #0f2740; }
+    .share-btn-tw   { background: #0f766e; color: white; }
+    .share-btn-tw:hover { background: #0d6660; }
+    .share-btn-cp   { background: #f1f5f9; color: #374151; border: 2px solid #e2e8f0; }
+    .share-btn-cp:hover { background: #e2e8f0; }
+    .warn-note {
+      background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 8px;
+      padding: 10px 14px; font-size: 0.77rem; color: #92400e; line-height: 1.55; margin-top: 10px;
+    }
     .hidden { display: none !important; }
     @media (max-width: 480px) {
       .card { padding: 22px 18px 20px; }
@@ -216,12 +263,12 @@
     <div class="prog-line" id="pline1"></div>
     <div class="prog-step">
       <div class="prog-circle" id="pc2">2</div>
-      <div class="prog-label" id="pl2">Your Vehicle</div>
+      <div class="prog-label" id="pl2">My Vehicle</div>
     </div>
     <div class="prog-line" id="pline2"></div>
     <div class="prog-step">
       <div class="prog-circle" id="pc3">3</div>
-      <div class="prog-label" id="pl3">Tax Relief</div>
+      <div class="prog-label" id="pl3">My Results</div>
     </div>
   </div>
 
@@ -266,12 +313,18 @@
       </select>
     </div>
     <div id="customSection" class="hidden">
-      <label class="field-label" for="customPriceInput">Price Per Gallon</label>
+      <label class="field-label" for="customPriceInput">Today's Price Per Gallon</label>
       <div class="input-wrap">
         <input type="number" id="customPriceInput" placeholder="e.g. 4.56" min="0.01" max="15" step="0.01" oninput="updatePreview()">
         <span class="input-unit">$/gal</span>
       </div>
-      <div class="info-note">💡 Pre-war comparison will use the U.S. average price from Feb. 26, 2026 — two days before the war in Iran began.</div>
+      <div style="height:14px;"></div>
+      <label class="field-label" for="customPrewarInput">Pre-War Price Per Gallon <span style="font-weight:500;text-transform:none;letter-spacing:0;color:#94a3b8;">(optional)</span></label>
+      <div class="input-wrap">
+        <input type="number" id="customPrewarInput" placeholder="Leave blank for U.S. average on Feb. 26, 2026" min="0.01" max="15" step="0.01">
+        <span class="input-unit">$/gal</span>
+      </div>
+      <div class="info-note" style="margin-top:10px;">💡 If you leave pre-war price blank, the calculator will use the U.S. average price on Feb. 26, 2026 — two days before the war in Iran began.</div>
     </div>
     <div style="margin-top:20px;">
       <label class="field-label">Fuel Type</label>
@@ -329,6 +382,17 @@
         <div class="pt-desc">Complete pass-through; every cent reaches consumers</div>
       </div>
     </div>
+    <div class="state-tax-section">
+      <label class="field-label">Also suspend state gas taxes? <span style="font-weight:500;text-transform:none;letter-spacing:0;color:#94a3b8;">(optional — not selected by default)</span></label>
+      <div class="toggle-group state-tax-toggle" id="stateTaxToggle">
+        <button class="toggle-btn active" onclick="setStateTax('none',this)">None</button>
+        <button class="toggle-btn"        onclick="setStateTax('gastax',this)">State Gas Tax</button>
+        <button class="toggle-btn"        onclick="setStateTax('otherfees',this)">Other State Fees</button>
+        <button class="toggle-btn"        onclick="setStateTax('both',this)">Both</button>
+      </div>
+      <div id="suspendNote"   class="warn-note hidden"></div>
+      <div id="otherFeesNote" class="info-note hidden" style="margin-top:10px;">ℹ️ <strong>Note:</strong> "Other State Fees" may understate savings, as some of these fees are sales-tax-based and were assessed on pre-war gas prices — so the full dollar amount of relief could be higher than shown here.</div>
+    </div>
     <div class="nav-row">
       <button class="btn-back" onclick="goStep(2)">&larr; Back</button>
       <button class="btn-next" onclick="showResults()">See My Results &rarr;</button>
@@ -343,6 +407,26 @@
     Pre-war baseline: Feb. 26, 2026 (via Wayback Machine), two days before the conflict in Iran began.
     Tank sizes from Edmunds. Federal gas tax: $0.184/gallon; diesel: $0.244/gallon.
     Pass-through rates from the Penn Wharton Budget Model (2022).
+    State gas tax rates from the U.S. Energy Information Administration (EIA), updated January 2026.
+  </div>
+</div>
+
+<!-- Share modal -->
+<div id="shareModalOverlay" class="share-modal-overlay hidden" onclick="closeShareModal(event)">
+  <div class="share-modal" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div class="share-modal-title">📲 Share Your Results</div>
+        <div class="share-modal-sub">Download or share a snapshot of your gas savings</div>
+      </div>
+      <button onclick="closeShareModal()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;color:#94a3b8;padding:0;line-height:1;margin-left:12px;">✕</button>
+    </div>
+    <img id="sharePreview" class="share-preview" alt="Your results snapshot">
+    <div class="share-btns">
+      <button class="share-btn share-btn-dl" onclick="downloadShareImage()">💾 Download Image</button>
+      <button class="share-btn share-btn-tw hidden" id="nativeShareBtn" onclick="nativeShareImage()">📤 Share Image</button>
+      <button class="share-btn share-btn-cp" onclick="copyShareText()" id="copyBtn">📋 Copy Text</button>
+    </div>
   </div>
 </div>
 
@@ -350,60 +434,60 @@
 // ============================================================
 // PRICES — auto-updated daily by GitHub Actions.
 // ==PRICES_TODAY_START==
-const PRICES_AS_OF = "May 13, 2026";
+const PRICES_AS_OF = "May 11, 2026";
 const PRICES_TODAY = {
-  'US Average':               { regular:4.51, midgrade:5.00, premium:5.38, diesel:5.66 },
-  'Alabama':                  { regular:4.06, midgrade:4.51, premium:4.91, diesel:5.24 },
-  'Alaska':                   { regular:5.26, midgrade:5.51, premium:5.72, diesel:5.91 },
-  'Arizona':                  { regular:4.83, midgrade:5.20, premium:5.52, diesel:5.79 },
-  'Arkansas':                 { regular:4.03, midgrade:4.47, premium:4.84, diesel:5.20 },
-  'California':               { regular:6.15, midgrade:6.39, premium:6.57, diesel:7.45 },
-  'Colorado':                 { regular:4.55, midgrade:4.97, premium:5.31, diesel:5.60 },
-  'Connecticut':              { regular:4.62, midgrade:5.12, premium:5.52, diesel:5.82 },
-  'Delaware':                 { regular:4.33, midgrade:4.88, premium:5.17, diesel:5.53 },
-  'District of Columbia':     { regular:4.66, midgrade:5.28, premium:5.62, diesel:5.97 },
-  'Florida':                  { regular:4.31, midgrade:4.76, premium:5.10, diesel:5.26 },
-  'Georgia':                  { regular:4.00, midgrade:4.46, premium:4.87, diesel:5.11 },
-  'Hawaii':                   { regular:5.65, midgrade:5.91, premium:6.13, diesel:7.14 },
-  'Idaho':                    { regular:4.62, midgrade:4.89, premium:5.17, diesel:5.58 },
-  'Illinois':                 { regular:5.03, midgrade:5.61, premium:6.08, diesel:6.12 },
-  'Indiana':                  { regular:4.28, midgrade:4.86, premium:5.34, diesel:6.13 },
-  'Iowa':                     { regular:4.19, midgrade:4.43, premium:5.00, diesel:5.36 },
-  'Kansas':                   { regular:4.08, midgrade:4.42, premium:4.75, diesel:5.15 },
-  'Kentucky':                 { regular:4.22, midgrade:4.77, premium:5.19, diesel:5.30 },
-  'Louisiana':                { regular:4.00, midgrade:4.44, premium:4.81, diesel:5.10 },
-  'Maine':                    { regular:4.51, midgrade:5.04, premium:5.53, diesel:5.80 },
-  'Maryland':                 { regular:4.44, midgrade:5.00, premium:5.33, diesel:5.61 },
-  'Massachusetts':            { regular:4.47, midgrade:5.01, premium:5.40, diesel:5.80 },
-  'Michigan':                 { regular:4.83, midgrade:5.40, premium:5.96, diesel:6.13 },
-  'Minnesota':                { regular:4.16, midgrade:4.57, premium:5.07, diesel:5.39 },
-  'Mississippi':              { regular:3.99, midgrade:4.41, premium:4.79, diesel:5.08 },
-  'Missouri':                 { regular:4.17, midgrade:4.56, premium:4.87, diesel:5.27 },
-  'Montana':                  { regular:4.50, midgrade:4.83, premium:5.18, diesel:5.46 },
-  'Nebraska':                 { regular:4.12, midgrade:4.30, premium:4.76, diesel:5.18 },
-  'Nevada':                   { regular:5.23, midgrade:5.55, premium:5.84, diesel:6.15 },
-  'New Hampshire':            { regular:4.48, midgrade:5.00, premium:5.45, diesel:5.75 },
-  'New Jersey':               { regular:4.52, midgrade:5.03, premium:5.30, diesel:5.62 },
-  'New Mexico':               { regular:4.34, midgrade:4.75, premium:5.06, diesel:5.47 },
-  'New York':                 { regular:4.59, midgrade:5.08, premium:5.48, diesel:5.94 },
-  'North Carolina':           { regular:4.17, midgrade:4.61, premium:5.00, diesel:5.44 },
-  'North Dakota':             { regular:4.15, midgrade:4.51, premium:4.92, diesel:5.24 },
-  'Ohio':                     { regular:4.65, midgrade:5.18, premium:5.69, diesel:6.06 },
-  'Oklahoma':                 { regular:3.98, midgrade:4.39, premium:4.69, diesel:5.03 },
-  'Oregon':                   { regular:5.34, midgrade:5.58, premium:5.85, diesel:6.21 },
-  'Pennsylvania':             { regular:4.66, midgrade:5.08, premium:5.46, diesel:5.96 },
-  'Rhode Island':             { regular:4.48, midgrade:5.13, premium:5.56, diesel:5.60 },
-  'South Carolina':           { regular:4.13, midgrade:4.56, premium:4.96, diesel:5.31 },
-  'South Dakota':             { regular:4.22, midgrade:4.41, premium:4.86, diesel:5.17 },
-  'Tennessee':                { regular:4.13, midgrade:4.59, premium:4.99, diesel:5.20 },
-  'Texas':                    { regular:4.01, midgrade:4.48, premium:4.85, diesel:5.05 },
-  'Utah':                     { regular:4.59, midgrade:4.86, premium:5.11, diesel:5.57 },
-  'Vermont':                  { regular:4.54, midgrade:5.04, premium:5.50, diesel:5.78 },
-  'Virginia':                 { regular:4.27, midgrade:4.74, premium:5.11, diesel:5.59 },
-  'Washington':               { regular:5.77, midgrade:6.03, premium:6.28, diesel:6.82 },
-  'West Virginia':            { regular:4.44, midgrade:4.90, premium:5.33, diesel:5.73 },
-  'Wisconsin':                { regular:4.51, midgrade:4.99, premium:5.61, diesel:5.87 },
-  'Wyoming':                  { regular:4.48, midgrade:4.76, premium:5.05, diesel:5.49 },
+  'US Average':               { regular:4.52, midgrade:5.00, premium:5.37, diesel:5.64 },
+  'Alabama':                  { regular:4.07, midgrade:4.50, premium:4.90, diesel:5.22 },
+  'Alaska':                   { regular:5.26, midgrade:5.50, premium:5.73, diesel:5.95 },
+  'Arizona':                  { regular:4.81, midgrade:5.17, premium:5.50, diesel:5.74 },
+  'Arkansas':                 { regular:4.00, midgrade:4.45, premium:4.79, diesel:5.19 },
+  'California':               { regular:6.16, midgrade:6.38, premium:6.58, diesel:7.45 },
+  'Colorado':                 { regular:4.36, midgrade:4.75, premium:5.07, diesel:5.43 },
+  'Connecticut':              { regular:4.62, midgrade:5.11, premium:5.52, diesel:5.82 },
+  'Delaware':                 { regular:4.35, midgrade:4.89, premium:5.17, diesel:5.55 },
+  'District of Columbia':     { regular:4.65, midgrade:5.20, premium:5.65, diesel:5.97 },
+  'Florida':                  { regular:4.40, midgrade:4.84, premium:5.18, diesel:5.28 },
+  'Georgia':                  { regular:4.04, midgrade:4.46, premium:4.89, diesel:5.11 },
+  'Hawaii':                   { regular:5.65, midgrade:5.90, premium:6.14, diesel:7.09 },
+  'Idaho':                    { regular:4.55, midgrade:4.80, premium:5.09, diesel:5.51 },
+  'Illinois':                 { regular:4.97, midgrade:5.53, premium:6.00, diesel:6.02 },
+  'Indiana':                  { regular:4.35, midgrade:4.91, premium:5.41, diesel:5.98 },
+  'Iowa':                     { regular:4.20, midgrade:4.49, premium:5.06, diesel:5.38 },
+  'Kansas':                   { regular:4.08, midgrade:4.40, premium:4.74, diesel:5.16 },
+  'Kentucky':                 { regular:4.27, midgrade:4.82, premium:5.24, diesel:5.32 },
+  'Louisiana':                { regular:4.00, midgrade:4.43, premium:4.82, diesel:5.09 },
+  'Maine':                    { regular:4.52, midgrade:5.05, premium:5.55, diesel:5.80 },
+  'Maryland':                 { regular:4.47, midgrade:5.03, premium:5.35, diesel:5.62 },
+  'Massachusetts':            { regular:4.46, midgrade:5.00, premium:5.40, diesel:5.81 },
+  'Michigan':                 { regular:4.72, midgrade:5.30, premium:5.87, diesel:5.97 },
+  'Minnesota':                { regular:4.17, midgrade:4.59, premium:5.09, diesel:5.40 },
+  'Mississippi':              { regular:3.98, midgrade:4.42, premium:4.81, diesel:5.08 },
+  'Missouri':                 { regular:4.14, midgrade:4.54, premium:4.86, diesel:5.28 },
+  'Montana':                  { regular:4.48, midgrade:4.79, premium:5.13, diesel:5.45 },
+  'Nebraska':                 { regular:4.04, midgrade:4.27, premium:4.75, diesel:5.17 },
+  'Nevada':                   { regular:5.24, midgrade:5.54, premium:5.84, diesel:6.16 },
+  'New Hampshire':            { regular:4.49, midgrade:5.00, premium:5.45, diesel:5.75 },
+  'New Jersey':               { regular:4.53, midgrade:5.02, premium:5.29, diesel:5.63 },
+  'New Mexico':               { regular:4.12, midgrade:4.54, premium:4.85, diesel:5.37 },
+  'New York':                 { regular:4.58, midgrade:5.06, premium:5.46, diesel:5.93 },
+  'North Carolina':           { regular:4.16, midgrade:4.59, premium:4.98, diesel:5.44 },
+  'North Dakota':             { regular:4.15, midgrade:4.49, premium:4.92, diesel:5.23 },
+  'Ohio':                     { regular:4.70, midgrade:5.23, premium:5.74, diesel:5.94 },
+  'Oklahoma':                 { regular:3.95, midgrade:4.36, premium:4.66, diesel:5.00 },
+  'Oregon':                   { regular:5.32, midgrade:5.55, premium:5.83, diesel:6.20 },
+  'Pennsylvania':             { regular:4.67, midgrade:5.08, premium:5.46, diesel:5.96 },
+  'Rhode Island':             { regular:4.47, midgrade:5.12, premium:5.53, diesel:5.62 },
+  'South Carolina':           { regular:4.13, midgrade:4.55, premium:4.95, diesel:5.30 },
+  'South Dakota':             { regular:4.22, midgrade:4.44, premium:4.91, diesel:5.17 },
+  'Tennessee':                { regular:4.16, midgrade:4.61, premium:5.01, diesel:5.19 },
+  'Texas':                    { regular:4.03, midgrade:4.50, premium:4.86, diesel:5.07 },
+  'Utah':                     { regular:4.49, midgrade:4.77, premium:5.01, diesel:5.47 },
+  'Vermont':                  { regular:4.54, midgrade:5.07, premium:5.50, diesel:5.78 },
+  'Virginia':                 { regular:4.30, midgrade:4.76, premium:5.14, diesel:5.60 },
+  'Washington':               { regular:5.76, midgrade:6.02, premium:6.27, diesel:6.81 },
+  'West Virginia':            { regular:4.40, midgrade:4.82, premium:5.26, diesel:5.65 },
+  'Wisconsin':                { regular:4.38, midgrade:4.90, premium:5.47, diesel:5.76 },
+  'Wyoming':                  { regular:4.39, midgrade:4.68, premium:4.98, diesel:5.46 },
 };
 // ==PRICES_TODAY_END==
 // ============================================================
@@ -470,9 +554,80 @@ const FUEL_LABELS = { regular:'Regular', midgrade:'Mid-Grade', premium:'Premium'
 const VEH_LABELS  = { sedan:'Sedan', suv:'SUV', truck:'Truck' };
 const PT_LABELS   = { low:'Low (60%)', high:'High (80%)', full:'Full (100%)' };
 
+// State gas tax rates — Source: EIA, January 2026
+// gasTax = state excise/gas tax only (Col B); otherFees = other taxes & fees (Col C); total = Col D
+const STATE_TAXES = {
+  'US Average':           { gasTax:0.2868, otherFees:0.0520, total:0.3327 },
+  'Alabama':              { gasTax:0.3000, otherFees:0.0100, total:0.3100 },
+  'Alaska':               { gasTax:0.0800, otherFees:0.0095, total:0.0895 },
+  'Arizona':              { gasTax:0.1800, otherFees:0.0100, total:0.1900 },
+  'Arkansas':             { gasTax:0.2470, otherFees:0.0030, total:0.2500 },
+  'California':           { gasTax:0.6120, otherFees:0.0972, total:0.7092 },
+  'Colorado':             { gasTax:0.2200, otherFees:0.0718, total:0.2918 },
+  'Connecticut':          { gasTax:0.2500, otherFees:0.0000, total:0.2500 },
+  'Delaware':             { gasTax:0.2300, otherFees:0.0000, total:0.2300 },
+  'District of Columbia': { gasTax:0.2350, otherFees:0.1220, total:0.3570 },
+  'Florida':              { gasTax:0.2200, otherFees:0.1810, total:0.4010 },
+  'Georgia':              { gasTax:0.3330, otherFees:0.0075, total:0.3405 },
+  'Hawaii':               { gasTax:0.1600, otherFees:0.0250, total:0.1850 },
+  'Idaho':                { gasTax:0.3200, otherFees:0.0100, total:0.3300 },
+  'Illinois':             { gasTax:0.4830, otherFees:0.1810, total:0.6640 },
+  'Indiana':              { gasTax:0.3600, otherFees:0.1750, total:0.5350 },
+  'Iowa':                 { gasTax:0.3000, otherFees:0.0000, total:0.3000 },
+  'Kansas':               { gasTax:0.2400, otherFees:0.0103, total:0.2503 },
+  'Kentucky':             { gasTax:0.2500, otherFees:0.0140, total:0.2640 },
+  'Louisiana':            { gasTax:0.2000, otherFees:0.0093, total:0.2093 },
+  'Maine':                { gasTax:0.3000, otherFees:0.0145, total:0.3145 },
+  'Maryland':             { gasTax:0.3300, otherFees:0.1321, total:0.4621 },
+  'Massachusetts':        { gasTax:0.2400, otherFees:0.0356, total:0.2756 },
+  'Michigan':             { gasTax:0.5240, otherFees:0.0100, total:0.5340 },
+  'Minnesota':            { gasTax:0.3260, otherFees:0.0010, total:0.3270 },
+  'Mississippi':          { gasTax:0.2100, otherFees:0.0040, total:0.2140 },
+  'Missouri':             { gasTax:0.2950, otherFees:0.0049, total:0.2999 },
+  'Montana':              { gasTax:0.3300, otherFees:0.0075, total:0.3375 },
+  'Nebraska':             { gasTax:0.3180, otherFees:0.0090, total:0.3270 },
+  'Nevada':               { gasTax:0.2300, otherFees:0.0081, total:0.2381 },
+  'New Hampshire':        { gasTax:0.2220, otherFees:0.0155, total:0.2375 },
+  'New Jersey':           { gasTax:0.1050, otherFees:0.3865, total:0.4915 },
+  'New Mexico':           { gasTax:0.1700, otherFees:0.0188, total:0.1888 },
+  'New York':             { gasTax:0.0800, otherFees:0.1618, total:0.2418 },
+  'North Carolina':       { gasTax:0.4100, otherFees:0.0025, total:0.4125 },
+  'North Dakota':         { gasTax:0.2300, otherFees:0.0003, total:0.2303 },
+  'Ohio':                 { gasTax:0.3850, otherFees:0.0000, total:0.3850 },
+  'Oklahoma':             { gasTax:0.1900, otherFees:0.0100, total:0.2000 },
+  'Oregon':               { gasTax:0.4000, otherFees:0.0000, total:0.4000 },
+  'Pennsylvania':         { gasTax:0.5760, otherFees:0.0110, total:0.5870 },
+  'Rhode Island':         { gasTax:0.4000, otherFees:0.0112, total:0.4112 },
+  'South Carolina':       { gasTax:0.2800, otherFees:0.0075, total:0.2875 },
+  'South Dakota':         { gasTax:0.2800, otherFees:0.0200, total:0.3000 },
+  'Tennessee':            { gasTax:0.2600, otherFees:0.0140, total:0.2740 },
+  'Texas':                { gasTax:0.2000, otherFees:0.0000, total:0.2000 },
+  'Utah':                 { gasTax:0.3790, otherFees:0.0065, total:0.3855 },
+  'Vermont':              { gasTax:0.1210, otherFees:0.1941, total:0.3151 },
+  'Virginia':             { gasTax:0.3170, otherFees:0.0990, total:0.4160 },
+  'Washington':           { gasTax:0.5540, otherFees:0.0364, total:0.5904 },
+  'West Virginia':        { gasTax:0.2050, otherFees:0.1520, total:0.3570 },
+  'Wisconsin':            { gasTax:0.3090, otherFees:0.0200, total:0.3290 },
+  'Wyoming':              { gasTax:0.2300, otherFees:0.0100, total:0.2400 },
+};
+const ST_OPT_LABELS = {
+  gastax:    'state gas tax',
+  otherfees: 'other state taxes & fees',
+  both:      'total state taxes & fees',
+};
+// States that have already temporarily suspended their state gas tax
+const SUSPENDED_STATES = {
+  'Indiana': 'Indiana has already temporarily suspended its state gas tax through June 7.',
+  'Georgia': 'Georgia has already temporarily suspended its state gas tax through May 19.',
+};
+
 document.getElementById('headerDate').textContent = PRICES_AS_OF;
 
-const S = { locType:'state', state:'US Average', customPrice:null, fuel:'regular', vehicleType:null, customGallons:null, pt:'high' };
+// Set your GitHub Pages URL here to include it in shared tweets (optional)
+const SHARE_URL = '';
+let R = {}; // populated in showResults(); used by share functions
+
+const S = { locType:'state', state:'US Average', customPrice:null, customPrewarPrice:null, fuel:'regular', vehicleType:null, customGallons:null, pt:'high', stateTaxOpt:'none' };
 const $   = id => document.getElementById(id);
 const fmt = n  => '$' + Math.abs(n).toFixed(2);
 const fmtRange = (lo,hi) => `${fmt(lo)} – ${fmt(hi)}`;
@@ -490,7 +645,7 @@ function setFuel(fuel, el) {
   document.querySelectorAll('.fuel-btn').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel'); updatePreview();
 }
-function onStateChange() { S.state=$('stateSelect').value; updatePreview(); }
+function onStateChange() { S.state=$('stateSelect').value; updatePreview(); updateStateTaxUI(); }
 function updatePreview() {
   let price, locLabel;
   if (S.locType==='state') {
@@ -521,16 +676,42 @@ function pickPT(level,el) {
   document.querySelectorAll('.pt-card').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
 }
+function setStateTax(opt,el) {
+  S.stateTaxOpt=opt;
+  document.querySelectorAll('#stateTaxToggle .toggle-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  $('otherFeesNote').classList.toggle('hidden', opt!=='otherfees');
+}
+function updateStateTaxUI() {
+  const state = S.locType==='state' ? S.state : null;
+  const suspMsg = state && SUSPENDED_STATES[state];
+  const btns = document.querySelectorAll('#stateTaxToggle .toggle-btn');
+  // btn indices: 0=None, 1=State Gas Tax, 2=Other State Fees, 3=Both
+  [1,3].forEach(i => { btns[i].disabled = !!suspMsg; });
+  // If a now-disabled option was selected, reset to None
+  if (suspMsg && (S.stateTaxOpt==='gastax'||S.stateTaxOpt==='both')) {
+    S.stateTaxOpt='none';
+    btns.forEach((b,i)=>b.classList.toggle('active',i===0));
+    $('otherFeesNote').classList.add('hidden');
+  }
+  // Suspension warning note
+  const sn=$('suspendNote');
+  if(suspMsg){ sn.innerHTML='⚠️ '+suspMsg+' "State Gas Tax" and "Both" options are not applicable.'; sn.classList.remove('hidden'); }
+  else { sn.classList.add('hidden'); }
+}
 function goStep(n) {
   if (n===2&&S.locType==='custom') {
     const raw=parseFloat($('customPriceInput').value);
     if (isNaN(raw)||raw<=0){alert('Please enter a valid gas price per gallon.');return;}
     S.customPrice=raw;
+    const prewarRaw=parseFloat($('customPrewarInput').value);
+    S.customPrewarPrice=(!isNaN(prewarRaw)&&prewarRaw>0)?prewarRaw:null;
   }
   updateProgress(n);
   ['step1','step2','step3','resultsCard'].forEach(id=>$(id).classList.add('hidden'));
   $('disclaimer').classList.add('hidden');
   $('step'+n).classList.remove('hidden');
+  if(n===3) updateStateTaxUI();
 }
 function updateProgress(active) {
   for(let i=1;i<=3;i++){
@@ -550,39 +731,138 @@ function showResults() {
     if(i<3) $('pline'+i).classList.add('done');
   }
   ['step1','step2','step3'].forEach(id=>$(id).classList.add('hidden'));
+
   const fuel=S.fuel;
   let nowPrice,thenPrice,locLabel,customNote='';
   if(S.locType==='state'){
     nowPrice=PRICES_TODAY[S.state][fuel]; thenPrice=PRICES_PREWAR[S.state][fuel];
     locLabel=S.state==='US Average'?'U.S. Average':S.state;
   } else {
-    nowPrice=S.customPrice; thenPrice=PRICES_PREWAR['US Average'][fuel]; locLabel='Your Price';
-    customNote=`<div class="info-note" style="margin-bottom:14px;">💡 Pre-war price shown is the U.S. average on Feb. 26, 2026 (${fmt(thenPrice)}/gal for ${FUEL_LABELS[fuel]}), two days before the conflict in Iran began.</div>`;
+    nowPrice=S.customPrice;
+    thenPrice=S.customPrewarPrice||PRICES_PREWAR['US Average'][fuel];
+    locLabel='Your Price';
+    customNote=S.customPrewarPrice
+      ?`<div class="info-note" style="margin-bottom:14px;">💡 Using your entered pre-war price of ${fmt(thenPrice)}/gal for ${FUEL_LABELS[fuel]} as the comparison baseline.</div>`
+      :`<div class="info-note" style="margin-bottom:14px;">💡 Pre-war price shown is the U.S. average on Feb. 26, 2026 (${fmt(thenPrice)}/gal for ${FUEL_LABELS[fuel]}), two days before the conflict in Iran began.</div>`;
   }
   const priceIncrease=nowPrice-thenPrice;
   const taxRateVal=fuel==='diesel'?TAX_RATE.diesel:TAX_RATE.gas;
-  const savingsPerGal=taxRateVal*PASSTHRU[S.pt];
+  const ptRate=PASSTHRU[S.pt];
+  const ptLabel=PT_LABELS[S.pt];
+
+  // Federal savings per gallon
+  const fedSavPerGal=taxRateVal*ptRate;
+
+  // State tax savings per gallon
+  const stateKey=S.locType==='state'?S.state:'US Average';
+  const stData=STATE_TAXES[stateKey]||STATE_TAXES['US Average'];
+  const stOpt=S.stateTaxOpt;
+  let rawStateRate=0;
+  if     (stOpt==='gastax')    rawStateRate=stData.gasTax;
+  else if(stOpt==='otherfees') rawStateRate=stData.otherFees;
+  else if(stOpt==='both')      rawStateRate=stData.total;
+  const stateSavPerGal=rawStateRate*ptRate;
+  const totalSavPerGal=fedSavPerGal+stateSavPerGal;
+  const hasState=stOpt!=='none';
+
+  // Gallons
   let isRange=false,galLow,galHigh,galSingle;
   if(S.customGallons){galSingle=S.customGallons;}
   else{isRange=true;galLow=TANKS[S.vehicleType].low;galHigh=TANKS[S.vehicleType].high;}
-  let warCostLow,warCostHigh,warCostSingle,taxSavLow,taxSavHigh,taxSavSingle;
-  if(isRange){warCostLow=priceIncrease*galLow;warCostHigh=priceIncrease*galHigh;taxSavLow=savingsPerGal*galLow;taxSavHigh=savingsPerGal*galHigh;}
-  else{warCostSingle=priceIncrease*galSingle;taxSavSingle=savingsPerGal*galSingle;}
+
+  // War cost
+  const warCostLow   =isRange?priceIncrease*galLow:null;
+  const warCostHigh  =isRange?priceIncrease*galHigh:null;
+  const warCostSingle=isRange?null:priceIncrease*galSingle;
+
+  // Federal savings
+  const fedSavLow   =isRange?fedSavPerGal*galLow:null;
+  const fedSavHigh  =isRange?fedSavPerGal*galHigh:null;
+  const fedSavSingle=isRange?null:fedSavPerGal*galSingle;
+
+  // State savings
+  const stSavLow   =isRange?stateSavPerGal*galLow:null;
+  const stSavHigh  =isRange?stateSavPerGal*galHigh:null;
+  const stSavSingle=isRange?null:stateSavPerGal*galSingle;
+
+  // Total savings (displayed in main box)
+  const totSavLow   =isRange?totalSavPerGal*galLow:null;
+  const totSavHigh  =isRange?totalSavPerGal*galHigh:null;
+  const totSavSingle=isRange?null:totalSavPerGal*galSingle;
+
+  // Which numbers drive the display
+  const dispSavLow   =hasState?totSavLow:fedSavLow;
+  const dispSavHigh  =hasState?totSavHigh:fedSavHigh;
+  const dispSavSingle=hasState?totSavSingle:fedSavSingle;
+
   const vLabel=S.vehicleType?`${VEH_LABELS[S.vehicleType]} (${galLow}–${galHigh} gal)`:`${galSingle}-gallon tank`;
-  const ptLabel=PT_LABELS[S.pt];
   const warHTML=isRange?`<div class="r-range-label">Estimated range</div><div class="r-amount-range">${fmtRange(warCostLow,warCostHigh)}</div>`:`<div class="r-amount">${fmt(warCostSingle)}</div>`;
-  const savHTML=isRange?`<div class="r-range-label">Estimated range</div><div class="r-amount-range">${fmtRange(taxSavLow,taxSavHigh)}</div>`:`<div class="r-amount">${fmt(taxSavSingle)}</div>`;
+  const savBoxLabel=hasState?'Total tax holiday savings per fill-up':'Federal gas tax holiday savings per fill-up';
+  const savHTML=isRange?`<div class="r-range-label">Estimated range</div><div class="r-amount-range">${fmtRange(dispSavLow,dispSavHigh)}</div>`:`<div class="r-amount">${fmt(dispSavSingle)}</div>`;
+
+  // Savings box description line
+  const savDesc=hasState
+    ?`Federal ${fmt(taxRateVal)}/gal + ${ST_OPT_LABELS[stOpt]} ${fmt(rawStateRate)}/gal &nbsp;·&nbsp; ${ptLabel} pass-through → ${fmt(totalSavPerGal)}/gal at the pump`
+    :`Federal ${fuel==='diesel'?'diesel':'gas'} tax: ${fmt(taxRateVal)}/gal &nbsp;·&nbsp; ${ptLabel} pass-through → ${fmt(fedSavPerGal)}/gal at the pump`;
+
+  // Breakdown line items (only when state tax selected)
+  let breakdownHTML='';
+  if(hasState){
+    const fedStr  =isRange?fmtRange(fedSavLow,fedSavHigh):fmt(fedSavSingle);
+    const stateStr=isRange?fmtRange(stSavLow,stSavHigh):fmt(stSavSingle);
+    const stateDesc=stOpt==='gastax'   ?`State gas tax: ${fmt(rawStateRate)}/gal`
+                  :stOpt==='otherfees' ?`Other fees: ${fmt(rawStateRate)}/gal`
+                  :                    `Total state taxes: ${fmt(rawStateRate)}/gal`;
+    breakdownHTML=`
+      <div class="savings-breakdown">
+        <div class="sav-line">
+          <div class="sav-line-label">Federal savings</div>
+          <div class="sav-line-amount">${fedStr}</div>
+          <div class="sav-line-desc">Fed. ${fuel==='diesel'?'diesel':'gas'} tax ${fmt(taxRateVal)}/gal</div>
+        </div>
+        <div class="sav-line">
+          <div class="sav-line-label">State savings</div>
+          <div class="sav-line-amount">${stateStr}</div>
+          <div class="sav-line-desc">${stateDesc}</div>
+        </div>
+      </div>`;
+  }
+
+  // Comparison bars
   const refWar=isRange?(warCostLow+warCostHigh)/2:warCostSingle;
-  const refSav=isRange?(taxSavLow+taxSavHigh)/2:taxSavSingle;
+  const refSav=isRange?(dispSavLow+dispSavHigh)/2:dispSavSingle;
   const maxVal=Math.max(refWar,refSav);
   const warPct=Math.round(refWar/maxVal*100);
   const savPct=Math.round(refSav/maxVal*100);
   const coversPct=Math.round(refSav/refWar*100);
   const barWarLabel=isRange?fmtRange(warCostLow,warCostHigh):fmt(warCostSingle);
-  const barSavLabel=isRange?fmtRange(taxSavLow,taxSavHigh):fmt(taxSavSingle);
+  const barSavLabel=isRange?fmtRange(dispSavLow,dispSavHigh):fmt(dispSavSingle);
+  const barRowLabel=hasState?'Tax holidays':'Tax holiday';
+  const holidayDesc=hasState?'combined federal + state':'federal';
   const compNote=(refWar-refSav)>0
-    ?`A gas tax holiday covers <strong>${coversPct}%</strong> of the war-related price increase. You'd still pay about <span>${isRange?fmtRange(warCostLow-taxSavHigh,warCostHigh-taxSavLow):fmt(refWar-refSav)}</span> more per fill-up than before the war.`
-    :`A gas tax holiday would <strong>more than fully offset</strong> the war-related price increase at the pump.`;
+    ?`A ${holidayDesc} gas tax holiday covers <strong>${coversPct}%</strong> of the war-related price increase. You'd still pay about <span>${isRange?fmtRange(Math.max(0,warCostLow-dispSavHigh),warCostHigh-dispSavLow):fmt(refWar-refSav)}</span> more per fill-up than before the war.`
+    :`A ${holidayDesc} gas tax holiday would <strong>more than fully offset</strong> the war-related price increase at the pump.`;
+
+  // State note for custom-price users
+  const stateAvgNote=(hasState&&S.locType==='custom')
+    ?`<div class="info-note" style="margin-bottom:12px;">ℹ️ Using national average state tax rates since no specific state was selected.</div>`
+    :'';
+
+  // Summary chip for state option
+  const stateChip=hasState
+    ?`<div class="sel-chip">🏛 <strong>${stOpt==='gastax'?'+ State Gas Tax':stOpt==='otherfees'?'+ Other State Fees':'+ All State Taxes'}</strong></div>`
+    :'';
+
+  // Store for share image generation
+  R={locLabel,fuel,vLabel,ptLabel,priceIncrease,nowPrice,thenPrice,isRange,
+     galLow,galHigh,galSingle,
+     warCostLow,warCostHigh,warCostSingle,
+     fedSavLow,fedSavHigh,fedSavSingle,
+     stSavLow,stSavHigh,stSavSingle,
+     dispSavLow,dispSavHigh,dispSavSingle,
+     fedSavPerGal,stateSavPerGal,totalSavPerGal,
+     hasState,stOpt};
+
   const el=$('resultsCard');
   el.innerHTML=`
     <div class="results-header"><h2>📊 Your Results</h2><p>Here's the real cost of the war in Iran on your wallet — and what a gas tax holiday could do about it.</p></div>
@@ -591,18 +871,20 @@ function showResults() {
       <div class="sel-chip">⛽ <strong>${FUEL_LABELS[fuel]}</strong></div>
       <div class="sel-chip">🚘 <strong>${vLabel}</strong></div>
       <div class="sel-chip">💸 <strong>${ptLabel} pass-through</strong></div>
+      ${stateChip}
     </div>
-    ${customNote}
+    ${customNote}${stateAvgNote}
     <div class="result-box war">
       <div class="r-icon">📈</div><div class="r-label">War cost increase per fill-up</div>
       ${warHTML}
       <div class="r-desc">Gas is ${fmt(priceIncrease)}/gal more expensive than before the war &nbsp;·&nbsp; ${fmt(nowPrice)}/gal today vs. ${fmt(thenPrice)}/gal on Feb. 26</div>
     </div>
     <div class="result-box savings">
-      <div class="r-icon">✂️</div><div class="r-label">Gas tax holiday savings per fill-up</div>
+      <div class="r-icon">✂️</div><div class="r-label">${savBoxLabel}</div>
       ${savHTML}
-      <div class="r-desc">Federal ${fuel==='diesel'?'diesel':'gas'} tax: ${fmt(taxRateVal)}/gal &nbsp;·&nbsp; ${ptLabel} pass-through → ${fmt(savingsPerGal)}/gal at the pump</div>
+      <div class="r-desc">${savDesc}</div>
     </div>
+    ${breakdownHTML}
     <div class="comparison-wrap">
       <div class="comp-title">Side-by-Side Comparison (per fill-up)</div>
       <div class="comp-row">
@@ -611,25 +893,181 @@ function showResults() {
         <div class="comp-amount war-c">${barWarLabel}</div>
       </div>
       <div class="comp-row">
-        <div class="comp-row-label">Tax holiday</div>
+        <div class="comp-row-label">${barRowLabel}</div>
         <div class="comp-bar-wrap"><div class="comp-bar savings-bar" id="barSav"></div></div>
         <div class="comp-amount save-c">${barSavLabel}</div>
       </div>
       <div class="comp-note">${compNote}</div>
     </div>
+    <button class="share-results-btn" onclick="openShareModal()">📲 Share My Results</button>
     <button class="restart-btn" onclick="restart()">&larr; Start Over</button>`;
   el.classList.remove('hidden'); $('disclaimer').classList.remove('hidden');
   setTimeout(()=>{$('barWar').style.width=warPct+'%';$('barSav').style.width=savPct+'%';},80);
 }
 function restart() {
-  Object.assign(S,{locType:'state',state:'US Average',customPrice:null,fuel:'regular',vehicleType:null,customGallons:null,pt:'high'});
-  $('stateSelect').value='US Average';$('customPriceInput').value='';$('gallonsInput').value='';
+  Object.assign(S,{locType:'state',state:'US Average',customPrice:null,customPrewarPrice:null,fuel:'regular',vehicleType:null,customGallons:null,pt:'high',stateTaxOpt:'none'});
+  $('stateSelect').value='US Average';$('customPriceInput').value='';$('customPrewarInput').value='';$('gallonsInput').value='';
   document.querySelectorAll('.vehicle-card').forEach(c=>c.classList.remove('sel'));
   document.querySelectorAll('.fuel-btn').forEach((b,i)=>b.classList.toggle('sel',i===0));
   document.querySelectorAll('.pt-card').forEach(c=>c.classList.remove('sel'));
   $('pt-high').classList.add('sel');$('next2').disabled=true;
+  document.querySelectorAll('#stateTaxToggle .toggle-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  $('otherFeesNote').classList.add('hidden');
+  updateStateTaxUI();
   setLocType('state');updatePreview();goStep(1);
 }
+
+// ── Share functions ───────────────────────────────────────────────────────────
+function openShareModal() {
+  const canvas = generateShareCanvas();
+  const img = $('sharePreview');
+  try { img.src = canvas.toDataURL('image/png'); } catch(e) { img.src=''; }
+  img._canvas = canvas;
+  // Show native share button only when the API + file sharing is supported
+  const testFile = new File([], 'test.png', { type: 'image/png' });
+  const supportsShare = !!(navigator.canShare && navigator.canShare({ files: [testFile] }));
+  $('nativeShareBtn').classList.toggle('hidden', !supportsShare);
+  $('shareModalOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeShareModal(e) {
+  if (!e || e.target === $('shareModalOverlay')) {
+    $('shareModalOverlay').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+function downloadShareImage() {
+  const a = document.createElement('a');
+  a.download = 'gas-tax-savings.png';
+  a.href = $('sharePreview').src;
+  a.click();
+}
+function buildShareText() {
+  const warAmt = R.isRange ? fmtRange(R.warCostLow,R.warCostHigh) : fmt(R.warCostSingle);
+  const savAmt = R.isRange ? fmtRange(R.dispSavLow,R.dispSavHigh) : fmt(R.dispSavSingle);
+  const loc = R.locLabel === 'Your Price' ? 'my area' : R.locLabel;
+  const holiday = R.hasState ? 'federal + state gas tax holiday' : 'federal gas tax holiday';
+  let text = `The war in Iran is costing me ${warAmt} extra per fill-up in ${loc}. A ${holiday} could save me ${savAmt} per tank.`;
+  if (SHARE_URL) text += '\n' + SHARE_URL;
+  return text;
+}
+async function nativeShareImage() {
+  const img = $('sharePreview');
+  try {
+    const res  = await fetch(img.src);
+    const blob = await res.blob();
+    const file = new File([blob], 'gas-tax-savings.png', { type: 'image/png' });
+    await navigator.share({ title: 'Gas Tax Calculator', text: buildShareText(), files: [file] });
+  } catch(e) {
+    if (e.name !== 'AbortError') downloadShareImage(); // fallback
+  }
+}
+function copyShareText() {
+  const btn = $('copyBtn');
+  navigator.clipboard.writeText(buildShareText()).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy Text'; }, 2000);
+  });
+}
+function generateShareCanvas() {
+  const W=720, H=400, dpr=2;
+  const canvas=document.createElement('canvas');
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+
+  // Background
+  ctx.fillStyle='#f8fafc'; ctx.fillRect(0,0,W,H);
+
+  // Header
+  const hg=ctx.createLinearGradient(0,0,W,0);
+  hg.addColorStop(0,'#1a3a5c'); hg.addColorStop(1,'#0f2740');
+  ctx.fillStyle=hg; ctx.fillRect(0,0,W,72);
+  ctx.fillStyle='#ef4444';
+  ctx.beginPath(); ctx.roundRect(20,14,134,20,10); ctx.fill();
+  ctx.fillStyle='white'; ctx.font='bold 10px system-ui'; ctx.textAlign='left';
+  ctx.fillText('IRAN WAR IMPACT',30,28);
+  ctx.fillStyle='white'; ctx.font='bold 19px system-ui';
+  ctx.fillText("What You're Really Paying at the Pump",20,57);
+
+  // Info row
+  ctx.fillStyle='#64748b'; ctx.font='12px system-ui';
+  const infoParts=[R.locLabel,FUEL_LABELS[R.fuel],R.vLabel,R.ptLabel+' pass-through'];
+  if(R.hasState) infoParts.push(ST_OPT_LABELS[R.stOpt]+' incl.');
+  let infoStr=infoParts.join('   ·   ');
+  while(ctx.measureText(infoStr).width>W-40&&infoParts.length>2){
+    infoParts.pop(); infoStr=infoParts.join('   ·   ')+'   ·   …';
+  }
+  ctx.fillText(infoStr,20,94);
+
+  // Cards
+  const cardY=110,cardH=212,gap=18;
+  const cardW=(W-40-gap)/2,c1x=20,c2x=20+cardW+gap;
+  function drawCard(x,y,w,h,fill,stroke){
+    ctx.beginPath(); ctx.roundRect(x,y,w,h,12);
+    ctx.fillStyle=fill; ctx.fill();
+    ctx.strokeStyle=stroke; ctx.lineWidth=1.5; ctx.stroke();
+  }
+  function fitAmt(text,maxW){
+    for(let s=40;s>=18;s--){
+      ctx.font='bold '+s+'px system-ui';
+      if(ctx.measureText(text).width<=maxW) return;
+    }
+    ctx.font='bold 18px system-ui';
+  }
+
+  // War card
+  drawCard(c1x,cardY,cardW,cardH,'#fef2f2','#fca5a5');
+  ctx.fillStyle='#b91c1c'; ctx.font='bold 10px system-ui'; ctx.textAlign='left';
+  ctx.fillText('WAR COST INCREASE',c1x+16,cardY+24);
+  ctx.fillStyle='#94a3b8'; ctx.font='10px system-ui';
+  ctx.fillText('extra cost per fill-up',c1x+16,cardY+40);
+  const warTxt=R.isRange?fmtRange(R.warCostLow,R.warCostHigh):fmt(R.warCostSingle);
+  ctx.fillStyle='#dc2626'; ctx.textAlign='center';
+  fitAmt(warTxt,cardW-32);
+  ctx.fillText(warTxt,c1x+cardW/2,cardY+(R.isRange?102:110));
+  if(R.isRange){ctx.fillStyle='#b91c1c';ctx.font='9.5px system-ui';ctx.fillText('estimated range',c1x+cardW/2,cardY+118);}
+  ctx.fillStyle='#94a3b8'; ctx.font='10px system-ui'; ctx.textAlign='center';
+  ctx.fillText(fmt(R.nowPrice)+'/gal today vs. '+fmt(R.thenPrice)+'/gal pre-war',c1x+cardW/2,cardY+cardH-14);
+
+  // Savings card
+  drawCard(c2x,cardY,cardW,cardH,'#f0fdf4','#86efac');
+  ctx.fillStyle='#15803d'; ctx.font='bold 10px system-ui'; ctx.textAlign='left';
+  ctx.fillText(R.hasState?'TOTAL TAX HOLIDAY SAVINGS':'TAX HOLIDAY SAVINGS',c2x+16,cardY+24);
+  ctx.fillStyle='#94a3b8'; ctx.font='10px system-ui';
+  ctx.fillText('savings per fill-up',c2x+16,cardY+40);
+  const savTxt=R.isRange?fmtRange(R.dispSavLow,R.dispSavHigh):fmt(R.dispSavSingle);
+  ctx.fillStyle='#16a34a'; ctx.textAlign='center';
+  fitAmt(savTxt,cardW-32);
+  ctx.fillText(savTxt,c2x+cardW/2,cardY+(R.isRange?102:110));
+  if(R.isRange){ctx.fillStyle='#15803d';ctx.font='9.5px system-ui';ctx.fillText('estimated range',c2x+cardW/2,cardY+118);}
+  if(R.hasState){
+    const fedStr=R.isRange?fmtRange(R.fedSavLow,R.fedSavHigh):fmt(R.fedSavSingle);
+    const stStr=R.isRange?fmtRange(R.stSavLow,R.stSavHigh):fmt(R.stSavSingle);
+    const divY=cardY+(R.isRange?136:130);
+    ctx.strokeStyle='#bbf7d0'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(c2x+16,divY); ctx.lineTo(c2x+cardW-16,divY); ctx.stroke();
+    ctx.font='9.5px system-ui'; ctx.fillStyle='#374151';
+    ctx.textAlign='left'; ctx.fillText('Federal:',c2x+16,divY+16);
+    ctx.textAlign='right'; ctx.fillText(fedStr,c2x+cardW/2-6,divY+16);
+    ctx.textAlign='left'; ctx.fillText('State:',c2x+cardW/2+6,divY+16);
+    ctx.textAlign='right'; ctx.fillText(stStr,c2x+cardW-16,divY+16);
+  }
+  ctx.fillStyle='#94a3b8'; ctx.font='10px system-ui'; ctx.textAlign='center';
+  ctx.fillText(fmt(R.fedSavPerGal)+'/gal federal'+(R.hasState?(' + '+fmt(R.stateSavPerGal)+'/gal state'):''),c2x+cardW/2,cardY+cardH-14);
+
+  // Footer
+  const footY=H-36;
+  ctx.fillStyle='#f1f5f9'; ctx.fillRect(0,footY,W,36);
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,footY); ctx.lineTo(W,footY); ctx.stroke();
+  ctx.fillStyle='#94a3b8'; ctx.font='10px system-ui';
+  ctx.textAlign='left'; ctx.fillText('Gas prices as of '+PRICES_AS_OF+' · Source: AAA (gasprices.aaa.com)',20,footY+23);
+  ctx.textAlign='right'; ctx.fillText('Gas Tax Calculator',W-20,footY+23);
+
+  return canvas;
+}
+
 updatePreview();
 </script>
 </body>
